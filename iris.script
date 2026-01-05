@@ -13,5 +13,8 @@
     zpm "install passwordless"
     ; importing the source code of the repository as ZPM module
     zn "USER"
-    zpm "load /home/irisowner/dev -v":1:1
+    zpm "install csvgenpy"
+    zpm "load /home/irisowner/dev -v"
+    do ##class(dc.onetomany.setup).Init()
+    //set ^UnitTestRoot="/usr/irissys/.vscode/USER/UnitTestRoot"
     halt

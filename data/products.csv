@@ -1,0 +1,5 @@
+id,name,listPriceUSD,description
+1,Lotus Enterprise,250000,"Enterprise-grade platform for large-scale workflows, governance, integrations, and high-availability deployments."
+2,Lotus Community Edition,0,"Free developer-friendly edition for prototyping, learning, and local experimentation with a vibrant plugin ecosystem."
+3,Lotus for Wealth,400000,"Toolkit and data layer for building wealth management products: client portfolios, risk profiling, and advisory workflows."
+4,Wealth Connect,150000,"Secure network layer to connect wealth communities worldwide with identity, messaging, and trust-based introductions."
