@@ -1,64 +1,30 @@
-## intersystems-objectscript-template
-This is a template for InterSystems ObjectScript Github repository.
-The template goes also with a few files which let you immediately compile your ObjectScript files in InterSystems IRIS Community Edition in a docker container
+## one-to many-case
+An example of importing data into IRIS from 3 csv files that are connected to each other: it's a story of a sales system with name "SuperSystems" which is a software enterprise that produces products (listed in /data/products.csv), which companies (listed in companiles.csv) tend to buy license/purchase a subscription through years - these facts are depicted in sales.csv.
 
-## Prerequisites
-Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
+The setup of the example loads the data into /src/dc/onetomany/companies.cls,products.cls and sales.cls respectively via csvgenpy module and this all is going on in /src/dc/onetomany/setup.cls:Init() class method.
 
-## Installation 
+Notice that facts of companies purchasing products are depicted in sales.csv where you can see id's of companies and products, so they should be preserved.
 
-Clone/git pull the repo into any local directory
+And the example shows that the way the data, containing ids (which are IDkeys and PrimaryKeys both) can be imported to IRIS classes/tables - notice e.g. the INDEX element in products.cls:
 
-```
-$ git clone https://github.com/intersystems-community/objectscript-docker-template.git
+```ObjectScript
+Index PRODUCTSPKEY1 On id [ IdKey, PrimaryKey, SqlName = PRODUCTS_PKEY1, Unique ];
 ```
 
-Open the terminal in this directory and run:
+
+
+So, feel free to use the example and to fork/PR of sharing any other possible ways how the data that needs to be travelled e.g. in csvs that contains entities linkage (e.g. via IDs) and so that first:
+can be imported to IRIS
+should be maintained "on your own" - like here, as IDs in companies.cls and products.cls are not maintained by IRIS.
+
+Make the changes please and make sure that after changes the data imported is accurate - there is a unittest that checks sum of sales for companies 103 and 104, equal 17000 and 7000 respectively so after importing the data test should still work:
 
 ```
-$ docker-compose build
+zpm:USER>test dc-onetomany-case
 ```
 
-3. Run the IRIS container with your project:
-
-```
-$ docker-compose up -d
-```
-
-## How to Test it
-
-Open IRIS terminal:
-
-```
-$ docker-compose exec iris iris session iris
-USER>write ##class(dc.sample.ObjectScript).Test()
-```
-## How to start coding
-This repository is ready to code in VSCode with ObjectScript plugin.
-Install [VSCode](https://code.visualstudio.com/), [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and [ObjectScript](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript) plugin and open the folder in VSCode.
-Open /src/cls/PackageSample/ObjectScript.cls class and try to make changes - it will be compiled in running IRIS docker container.
-![docker_compose](https://user-images.githubusercontent.com/2781759/76656929-0f2e5700-6547-11ea-9cc9-486a5641c51d.gif)
-
-Feel free to delete PackageSample folder and place your ObjectScript classes in a form
-/src/Package/Classname.cls
-[Read more about folder setup for InterSystems ObjectScript](https://community.intersystems.com/post/simplified-objectscript-source-folder-structure-package-manager)
-
-The script in Installer.cls will import everything you place under /src into IRIS.
+Enjoy!
 
 
-## What's inside the repository
-
-### Dockerfile
-
-The simplest Dockerfile which starts IRIS and imports code from /src folder into it.
-Use the related docker-compose.yml to easily setup additional parametes like port number and where you map keys and host folders.
 
 
-### .vscode/settings.json
-
-Settings file to let you immediately code in VSCode with [VSCode ObjectScript plugin](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript))
-
-### .vscode/launch.json
-Config file if you want to debug with VSCode ObjectScript
-
-[Read about all the files in this article](https://community.intersystems.com/post/dockerfile-and-friends-or-how-run-and-collaborate-objectscript-projects-intersystems-iris)
